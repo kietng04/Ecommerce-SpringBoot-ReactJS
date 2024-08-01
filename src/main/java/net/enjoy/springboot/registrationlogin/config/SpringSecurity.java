@@ -34,7 +34,7 @@ public class SpringSecurity {
                                 .requestMatchers("/blog").permitAll()
                                 .requestMatchers("/about").permitAll()
                                 .requestMatchers("/cart").permitAll()
-                                .requestMatchers("/product-detail").permitAll()
+                                .requestMatchers("/product-detail/**").permitAll() // Cập nhật để cho phép truy cập vào URL này
                                 .requestMatchers("/order").permitAll()
                                 .requestMatchers("/order-detail").permitAll()
                                 .requestMatchers("/users").hasRole("ADMIN")

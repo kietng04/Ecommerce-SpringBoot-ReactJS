@@ -53,10 +53,6 @@ public class AuthController {
         return "order-detail";
     }
 
-    @GetMapping("/product-detail")
-    public String productDetail() {
-        return "product-detail";
-    }
 
 
     // handler method to handle user registration form request

@@ -9,6 +9,7 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface ProductsRepository extends PagingAndSortingRepository<Product, Long> {
     @Query("SELECT p FROM Product p JOIN p.productDetails pd WHERE " +
@@ -27,6 +28,13 @@ public interface ProductsRepository extends PagingAndSortingRepository<Product, 
             Pageable pageable,
             @Param("name") String name
     );
+
+    @Query("SELECT p FROM Product p WHERE p.id = :id")
+    Optional<Product> findById(@Param("id") Long id);
+
+
+
+
 
 
 }

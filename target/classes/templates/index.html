@@ -207,7 +207,7 @@
     <p>Summer Collection Mew Modern Design</p>
     <div class="pro-container">
         <div class="pro" th:each="product : ${products}">
-            <a th:href="@{/product-detail}"> <img th:src="@{${product.img}}" alt=""/></a>
+            <a th:href="@{'/product-detail/' + ${product.id}}"> <img th:src="@{${product.img}}" alt=""/></a>
 
             <div class="des">
                 <span th:text="${product.description}"></span>

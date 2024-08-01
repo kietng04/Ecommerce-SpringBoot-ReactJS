@@ -10,6 +10,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
@@ -32,6 +33,12 @@ public class ProductController {
         model.addAttribute("categoryService", categoryService);
         model.addAttribute("products", products);
         return "index";
+    }
+    @GetMapping("/product-detail/{id}")
+    public String getProductDetail(@PathVariable Long id, Model model) {
+        ProductDto product = productService.findById(id);
+        model.addAttribute("product", product);
+        return "product-detail";
     }
 
     @GetMapping("/shop")

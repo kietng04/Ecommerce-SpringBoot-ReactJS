@@ -33,8 +33,9 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Product findById(Long id) {
-        return null;
+    public ProductDto findById(Long id) {
+        Product product = productsRepository.findById(id).orElseThrow(() -> new RuntimeException("Product not found"));
+        return convertEntityToDto(product);
     }
 
     @Override
@@ -51,4 +52,5 @@ public class ProductServiceImpl implements ProductService {
         productDto.setStatus(product.getStatus());
         return productDto;
     }
+
 }

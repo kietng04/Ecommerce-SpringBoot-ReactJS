@@ -39,28 +39,28 @@
 <section id="prodetails" class="section-p1">
 
     <div class="single-pro-image">
-        <img src="img/products/f1.jpg" width="100%" id="MainImg" alt="" />
+        <img th:src="@{${product.img}}" width="100%" id="MainImg" alt="" />
 
         <div class="small-img-group">
             <div class="small-img-col">
-                <img src="./img/products/f1.jpg" width="100%" class="small-img" alt="" />
+                <img th:src="@{${product.img}}" width="100%" class="small-img" alt="" />
             </div>
             <div class="small-img-col">
-                <img src="./img/products/f2.jpg" width="100%" class="small-img" alt="" />
+                <img th:src="@{${product.img}}" width="100%" class="small-img" alt="" />
             </div>
             <div class="small-img-col">
-                <img src="./img/products/f3.jpg" width="100%" class="small-img" alt="" />
+                <img th:src="@{${product.img}}" width="100%" class="small-img" alt="" />
             </div>
             <div class="small-img-col">
-                <img src="./img/products/f4.jpg" width="100%" class="small-img" alt="" />
+                <img th:src="@{${product.img}}" width="100%" class="small-img" alt="" />
             </div>
         </div>
     </div>
 
     <div class="single-pro-details">
-        <h6>Home / T-Shirts</h6>
-        <h4>Men's Fashion T Shirts</h4>
-        <h2>$139.00</h2>
+        <h6 th:text="'Home / ' + ${product.categoryId}">Home / T-Shirts</h6>
+        <h4 th:text="${product.name}">Men's Fashion T Shirts</h4>
+        <h2 th:text="'$' + ${product.description}">$139.00</h2>
         <select>
             <option>Select Size</option>
             <option>XL</option>
@@ -68,19 +68,12 @@
             <option>Small</option>
             <option>Large</option>
         </select>
-        <select>
-            <option>Select Color</option>
-            <option>Green</option>
-            <option>Yellow</option>
-            <option>Red</option>
-            <option>Wthite</option>
-        </select>
         <input type="number" value="1">
         <button class="normal">Add To Cart</button>
         <h4>Product Details</h4>
-        <span>
-          The Gildan Ultra Cotton T-shirt is made from a substantial 6.0 oz. per sq. yd. fabric constructed from 100% cotton, this classic fit preshrunk jersey knit provides unmatched comfort with each wear. Featuring a taped neck and shoulder, and a seamless double-needle collar, and available in a range of colors, it offers it all in the ultimate head-turning package.
-        </span>
+        <span th:text="${product.description}">
+        The Gildan Ultra Cotton T-shirt is made from a substantial 6.0 oz. per sq. yd. fabric constructed from 100% cotton, this classic fit preshrunk jersey knit provides unmatched comfort with each wear. Featuring a taped neck and shoulder, and a seamless double-needle collar, and available in a range of colors, it offers it all in the ultimate head-turning package.
+    </span>
     </div>
 
 </section>
