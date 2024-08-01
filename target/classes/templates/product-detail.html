@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -43,37 +43,32 @@
 
         <div class="small-img-group">
             <div class="small-img-col">
-                <img th:src="@{${product.img}}" width="100%" class="small-img" alt="" />
+                <img src="./img/products/f1.jpg" width="100%" class="small-img" alt="" />
             </div>
             <div class="small-img-col">
-                <img th:src="@{${product.img}}" width="100%" class="small-img" alt="" />
+                <img src="./img/products/f2.jpg" width="100%" class="small-img" alt="" />
             </div>
             <div class="small-img-col">
-                <img th:src="@{${product.img}}" width="100%" class="small-img" alt="" />
+                <img src="./img/products/f3.jpg" width="100%" class="small-img" alt="" />
             </div>
             <div class="small-img-col">
-                <img th:src="@{${product.img}}" width="100%" class="small-img" alt="" />
+                <img src="./img/products/f4.jpg" width="100%" class="small-img" alt="" />
             </div>
         </div>
     </div>
 
     <div class="single-pro-details">
-        <h6 th:text="'Home / ' + ${product.categoryId}">Home / T-Shirts</h6>
-        <h4 th:text="${product.name}">Men's Fashion T Shirts</h4>
-        <h2 th:text="'$' + ${product.description}">$139.00</h2>
+        <h6>Home / T-Shirts</h6>
+        <h4 th:text="${product.name}"></h4>
+        <h2 th:text="'$' + ${productDetails[0].price}"></h2>
         <select>
-            <option>Select Size</option>
-            <option>XL</option>
-            <option>XXL</option>
-            <option>Small</option>
-            <option>Large</option>
+            <option th:each="producDetail : ${productDetails}" th:text="'Size: ' + ${producDetail.size} + ' - Màu: ' + ${producDetail.color}" th:value="${producDetail.price}"></option>
         </select>
         <input type="number" value="1">
         <button class="normal">Add To Cart</button>
         <h4>Product Details</h4>
-        <span th:text="${product.description}">
-        The Gildan Ultra Cotton T-shirt is made from a substantial 6.0 oz. per sq. yd. fabric constructed from 100% cotton, this classic fit preshrunk jersey knit provides unmatched comfort with each wear. Featuring a taped neck and shoulder, and a seamless double-needle collar, and available in a range of colors, it offers it all in the ultimate head-turning package.
-    </span>
+        <span th:text="${product.description}"></span>
+
     </div>
 
 </section>
@@ -146,7 +141,10 @@
             </div>
             <a href="#"><i class="fa-solid fa-bag-shopping cart"></i></a>
         </div>
-
+<!--        if logged in then show div-->
+        <div sec:authorize="isAuthenticated()">
+            <p>Welcome back, user!</p>
+        </div>
     </div>
 </section>
 

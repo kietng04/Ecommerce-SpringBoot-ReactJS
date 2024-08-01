@@ -37,4 +37,5 @@ public interface ProductsRepository extends PagingAndSortingRepository<Product, 
 
 
 
+    Product findById(Long id);
 }

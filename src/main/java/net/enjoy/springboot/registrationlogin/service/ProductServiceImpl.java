@@ -1,7 +1,10 @@
 package net.enjoy.springboot.registrationlogin.service;
 
+import net.enjoy.springboot.registrationlogin.dto.ProductDetailDto;
 import net.enjoy.springboot.registrationlogin.dto.ProductDto;
 import net.enjoy.springboot.registrationlogin.entity.Product;
+import net.enjoy.springboot.registrationlogin.entity.ProductDetail;
+import net.enjoy.springboot.registrationlogin.repository.ProductsDetailRespository;
 import net.enjoy.springboot.registrationlogin.repository.ProductsRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -14,9 +17,11 @@ import java.util.stream.Collectors;
 public class ProductServiceImpl implements ProductService {
 
     ProductsRepository productsRepository;
+    ProductsDetailRespository productsDetailRespository;
 
-    public ProductServiceImpl(ProductsRepository productsRepository) {
+    public ProductServiceImpl(ProductsRepository productsRepository, ProductsDetailRespository productsDetailRespository) {
         this.productsRepository = productsRepository;
+        this.productsDetailRespository = productsDetailRespository;
     }
 
     @Override
@@ -34,13 +39,19 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public ProductDto findById(Long id) {
-        Product product = productsRepository.findById(id).orElseThrow(() -> new RuntimeException("Product not found"));
+        Product product = productsRepository.findById(id);
         return convertEntityToDto(product);
     }
 
     @Override
     public void saveProduct(Product product) {
 
+    }
+
+    @Override
+    public List<ProductDetailDto> findDetailById(Long idProduct) {
+        List<ProductDetail> productDetails = productsDetailRespository.findByProductId(idProduct);
+        return productDetails.stream().map(this::convertEntityToDto).collect(Collectors.toList());
     }
 
     private ProductDto convertEntityToDto(Product product) {
@@ -52,5 +63,13 @@ public class ProductServiceImpl implements ProductService {
         productDto.setStatus(product.getStatus());
         return productDto;
     }
-
+    private ProductDetailDto convertEntityToDto(ProductDetail productdetail) {
+        ProductDetailDto productDetailDto = new ProductDetailDto();
+        productDetailDto.setId(productdetail.getId());
+        productDetailDto.setColor(productdetail.getColor().getColorName());
+        productDetailDto.setSize(productdetail.getSize().getSizeName());
+        productDetailDto.setPrice(productdetail.getPrice());
+        productDetailDto.setQuantity(productdetail.getQuantity());
+        return productDetailDto;
+    }
 }
