@@ -48,12 +48,6 @@ public class ProductServiceImpl implements ProductService {
 
     }
 
-    @Override
-    public List<ProductDetailDto> findDetailById(Long idProduct) {
-        List<ProductDetail> productDetails = productsDetailRespository.findByProductId(idProduct);
-        return productDetails.stream().map(this::convertEntityToDto).collect(Collectors.toList());
-    }
-
     private ProductDto convertEntityToDto(Product product) {
         ProductDto productDto = new ProductDto();
         productDto.setId(product.getId());
@@ -63,13 +57,5 @@ public class ProductServiceImpl implements ProductService {
         productDto.setStatus(product.getStatus());
         return productDto;
     }
-    private ProductDetailDto convertEntityToDto(ProductDetail productdetail) {
-        ProductDetailDto productDetailDto = new ProductDetailDto();
-        productDetailDto.setId(productdetail.getId());
-        productDetailDto.setColor(productdetail.getColor().getColorName());
-        productDetailDto.setSize(productdetail.getSize().getSizeName());
-        productDetailDto.setPrice(productdetail.getPrice());
-        productDetailDto.setQuantity(productdetail.getQuantity());
-        return productDetailDto;
-    }
+
 }

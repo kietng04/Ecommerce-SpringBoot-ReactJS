@@ -11,8 +11,8 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "orderdetails")
-public class OrderDetails {
+@Table(name = "order_details")
+public class OrderDetail {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -21,11 +21,16 @@ public class OrderDetails {
     @JoinColumn(name = "order_id", nullable = false)
     private Order order;
 
-    @Column(nullable = false)
-    private double totalPrice;
+    @ManyToOne
+    @JoinColumn(name = "product_detail_id", nullable = false)
+    private ProductDetail productDetail;
+
 
     @Column(nullable = false)
     private long quantity;
+
+    @Column(nullable = false)
+    private double totalPrice;
 
 
 }

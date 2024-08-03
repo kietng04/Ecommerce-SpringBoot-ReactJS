@@ -8,6 +8,102 @@
   <link rel="stylesheet" href="./style.css" />
   <link rel="stylesheet" th:href="@{/css/style1.css}">
   <script src="https://kit.fontawesome.com/bea9b25826.js" crossorigin="anonymous"></script>
+
+  <script>
+    function updateCartDisplay() {
+      var cart = JSON.parse(localStorage.getItem("cart")) || [];
+      var cartItemsContainer = document.querySelector(".mini-cart .products");
+      var cartTableBody = document.querySelector("#cart tbody");
+      cartItemsContainer.innerHTML = "";
+      cartTableBody.innerHTML = "";
+
+      var totalQuantity = 0;
+      var totalPrice = 0;
+
+      cart.forEach(function(item, index) {
+        totalQuantity += item.quantity;
+        totalPrice += item.price * item.quantity;
+
+        var cartItem = document.createElement("li");
+        cartItem.classList.add("item");
+        cartItem.innerHTML = `
+        <div class="thumbnail object-cover">
+            <a href="#"><img src="${item.img}" alt=""></a>
+        </div>
+        <div class="item-content">
+            <p><a href="#" style="font-size: 14px">${item.name}</a></p>
+            <span class="price">
+                <span>$${item.price} - ${item.size} - ${item.color}</span>
+                <button class="fly-item" onclick="removeFromCart(${index})"><span>X</span></button>
+            </span>
+            <div class="qty-control flexitem">
+                <button class="minus" onclick="updateQuantity(${index}, -1)">-</button>
+                <input type="text" value="${item.quantity}" min="1">
+                <button class="plus" onclick="updateQuantity(${index}, 1)">+</button>
+            </div>
+        </div>
+        <a href="" class="item-remove" onclick="removeFromCart(${index})"><i class="ri-close-line"></i></a>
+      `;
+        cartItemsContainer.appendChild(cartItem);
+
+        var row = document.createElement("tr");
+        row.innerHTML = `
+        <td><a href="#" onclick="removeFromCart(${index})"><i class="fa-regular fa-circle-xmark"></i></a></td>
+        <td><img src="${item.img}" alt=""></td>
+        <td>${item.name}</td>
+        <td>$${item.price}</td>
+        <td>
+            <div class="qty-control flexitem">
+                <button class="minus" onclick="updateQuantity(${index}, -1)">-</button>
+                <input type="text" value="${item.quantity}" min="1" onchange="updateQuantity(${index}, this.value)">
+                <button class="plus" onclick="updateQuantity(${index}, 1)">+</button>
+            </div>
+        </td>
+        <td>$${(item.price * item.quantity).toFixed(2)}</td>
+      `;
+        cartTableBody.appendChild(row);
+      });
+
+      document.querySelector(".cart-head").innerText = `${totalQuantity} items in cart`;
+      document.querySelector(".fly-item .item-number").innerText = totalQuantity;
+      document.querySelector(".subtotal p strong").innerText = `$${totalPrice.toFixed(2)}`;
+      document.querySelector(".total-checkout").innerText = ` $${totalPrice.toFixed(2)}`;
+    }
+
+    function removeFromCart(index) {
+      var cart = JSON.parse(localStorage.getItem("cart")) || [];
+      cart.splice(index, 1);
+      localStorage.setItem("cart", JSON.stringify(cart));
+      updateCartDisplay();
+    }
+
+    function updateQuantity(index, change) {
+      var cart = JSON.parse(localStorage.getItem("cart")) || [];
+      cart[index].quantity = Math.max(1, parseInt(cart[index].quantity) + parseInt(change));
+      localStorage.setItem("cart", JSON.stringify(cart));
+      updateCartDisplay();
+    }
+
+    document.addEventListener("DOMContentLoaded", updateCartDisplay);
+  </script>
+
+  <script>
+    function placeOrder() {
+      var cart = JSON.parse(localStorage.getItem("cart")) || [];
+      if (cart.length === 0) {
+        alert("Your cart is empty!");
+        return;
+      }
+      //remove
+      //   localStorage.removeItem("cart");
+      //   updateCartDisplay();
+        alert("Order placed successfully!");
+
+    }
+
+
+  </script>
+
 </head>
 <body>
 <section id="header">
@@ -24,6 +120,134 @@
       <li><a th:href="@{/contact}">Contact</a></li>
       <li id="lg-bag">
         <a class="active"   th:href="@{/cart}"><i class="fa-solid fa-bag-shopping"></i></a>
+      </li>
+
+      <li class="iscart">
+        <a href="#">
+          <div class="icon-large" style="display: flex">
+            <div class="fly-item"><span class="item-number" style="
+    position: absolute;
+        top: -22px;
+    left: 28px;
+    color: green;
+">5</span></div>
+            <i class="fa-solid fa-shopping-cart"></i>
+          </div>
+
+        </a>
+        <div class="mini-cart">
+          <div class="content">
+            <div class="cart-head">
+              5 items in cart
+            </div>
+            <div class="cart-body">
+              <ul class="products mini">
+                <li class="item">
+                  <div class="thumbnail object-cover">
+                    <a href="#"><img th:src="@{/img/products/n1.jpg}" alt=""></a>
+                  </div>
+                  <div class="item-content">
+                    <p><a href="#" style="font-size: 14px">Dimmable Ceiling Light Modern</a></p>
+                    <span class="price">
+                                                            <span>$279.99 - XL - Xanh</span>
+                                                            <button class="fly-item"><span>X</span></button>
+
+                                                        </span>
+                    <div class="qty-control flexitem">
+                      <button class="minus">-</button>
+                      <input type="text" value="2" min="1">
+                      <button class="plus">+</button>
+                    </div>
+                  </div>
+                  <a href="" class="item-remove"><i class="ri-close-line"></i></a>
+                </li>
+                <li class="item">
+                  <div class="thumbnail object-cover">
+                    <a href="#"><img th:src="@{/img/products/n1.jpg}" alt=""></a>
+                  </div>
+                  <div class="item-content">
+                    <p><a href="#" style="font-size: 14px">Modern Storage Cabinet with Door & 3
+                      Drawers</a></p>
+                    <span class="price">
+                                                            <span>$129.99 - L - Vàng</span>
+                                                            <button class="fly-item"><span>X</span></button>
+                                                        </span>
+                    <div class="qty-control flexitem">
+                      <button class="minus">-</button>
+                      <input type="text" value="2" min="1">
+                      <button class="plus">+</button>
+                    </div>
+                  </div>
+                  <a href="" class="item-remove"><i class="ri-close-line"></i></a>
+                </li>
+                <li class="item">
+                  <div class="thumbnail object-cover">
+                    <a href="#"><img th:src="@{/img/products/n1.jpg}" alt=""></a>
+                  </div>
+                  <div class="item-content">
+                    <p><a href="#" style="font-size: 14px">Vonanda Velvet Sofa Couch</a></p>
+                    <span class="price">
+                                                            <span>$352.99 - M - Trắng</span>
+                                                            <button class="fly-item"><span>X</span></button>
+                                                        </span>
+                    <div class="qty-control flexitem">
+                      <button class="minus">-</button>
+                      <input type="text" value="2" min="1">
+                      <button class="plus">+</button>
+                    </div>
+                  </div>
+                  <a href="" class="item-remove"><i class="ri-close-line"></i></a>
+                </li>
+                <li class="item">
+                  <div class="thumbnail object-cover">
+                    <a href="#"><img th:src="@{/img/products/n1.jpg}" alt=""></a>
+                  </div>
+                  <div class="item-content">
+                    <p><a href="#" style="font-size: 14px">Awesome Bed for a Couple</a></p>
+                    <span class="price">
+                                                            <span>$579.99</span>
+                                                            <button class="fly-item"><span>X</span></button>
+                                                        </span>
+                    <div class="qty-control flexitem">
+                      <button class="minus">-</button>
+                      <input type="text" value="2" min="1">
+                      <button class="plus">+</button>
+                    </div>
+                  </div>
+                  <a href="" class="item-remove"><i class="ri-close-line"></i></a>
+                </li>
+                <li class="item">
+                  <div class="thumbnail object-cover">
+                    <a href="#"><img th:src="@{/img/products/n1.jpg}" alt=""></a>
+                  </div>
+                  <div class="item-content">
+                    <p><a href="#" style="font-size: 14px">Dimmable Ceiling Light Modern</a></p>
+                    <span class="price">
+                                                            <span>$279.99</span>
+                                                            <button class="fly-item"><span>X</span></button>
+                                                        </span>
+                    <div class="qty-control flexitem">
+                      <button class="minus">-</button>
+                      <input type="text" value="2" min="1">
+                      <button class="plus">+</button>
+                    </div>
+                  </div>
+                  <a href="" class="item-remove"><i class="ri-close-line"></i></a>
+                </li>
+              </ul>
+            </div>
+            <div class="cart-footer">
+              <div class="subtotal">
+                <p>Subtotal</p>
+                <p><strong>$1,622.95</strong></p>
+              </div>
+              <div class="actions">
+                <a th:href="@{/cart}" class="primary-button">Checkout</a>
+
+              </div>
+            </div>
+          </div>
+        </div>
       </li>
       <a href="#" id="close"><i class="fa-solid fa-xmark"></i></a>
     </ul>
@@ -59,7 +283,11 @@
       <td><img src="./img/products/f1.jpg" alt=""></td>
       <td>Cartoon Astronaut T-Shirts</td>
       <td>$118.19</td>
-      <td><input type="number" value="1"></td>
+      <td>  <div class="qty-control flexitem">
+        <button class="minus">-</button>
+        <input type="text" value="2" min="1">
+        <button class="plus">+</button>
+      </div></td>
       <td>$118.19</td>
     </tr>
     <tr>
@@ -83,10 +311,10 @@
 </section>
 
 
-<section class="section-p1">
-  <h2>#Checkout <i class="fa-solid fa-credit-card"></i></h2>
+<!--<section class="section-p1">-->
+<!--  <h2>#Checkout <i class="fa-solid fa-credit-card"></i></h2>-->
 
-</section>
+<!--</section>-->
 
 <section id="cart-add" class="section-p1">
 
@@ -112,15 +340,14 @@
         <td>Free</td>
       </tr>
       <tr>
-        <td><strong>Total Price</strong></td>
-        <td>$ 1,600</td>
+        <td><strong >Total Price</strong></td>
+        <td><p class="total-checkout">$ 1,600</p></td>
       </tr>
     </table>
-    <a th:href="@{/order}">
-    <button class="normal">
+<!--    <a th:href="@{/order}">-->
+    <button class="normal" onclick="placeOrder()">>
       Place Order!
     </button>
-    </a>
   </div>
 </section>
 

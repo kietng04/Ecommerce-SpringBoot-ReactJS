@@ -29,9 +29,6 @@ public interface ProductsRepository extends PagingAndSortingRepository<Product, 
             @Param("name") String name
     );
 
-    @Query("SELECT p FROM Product p WHERE p.id = :id")
-    Optional<Product> findById(@Param("id") Long id);
-
 
 
 

@@ -8,7 +8,10 @@ import java.util.List;
 public interface UserService {
     void saveUser(UserDto userDto);
 
+    //Hàm này sẽ trả về một đối tượng User dựa trên id được truyền vào.
+    User getUserById(Long id);
+
     User findUserByEmail(String email);
 
-    List<UserDto> findAllUsers();
+    List<UserDto> getAllUsers();
 }
