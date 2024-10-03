@@ -26,6 +26,11 @@ public class ProductController {
         this.categoryService = categoryService;
     }
 
+    @GetMapping("/admin")
+    public String checkVar() {
+        return "admin";
+    }
+    
     @GetMapping("/index")
     public String home(Model model, @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "3") int size) {
         Pageable pageable = PageRequest.of(page, size);
@@ -50,6 +55,8 @@ public class ProductController {
             products = productService.searchProduct(sizeId, colorId, categoryId, minPrice, maxPrice, pageable, name);
             System.out.println("products1 = " + products);
         }
+        // get all category
+        model.addAttribute("categories", categoryService.findAllCategory());
         model.addAttribute("products", products);
         return "shop";
     }
