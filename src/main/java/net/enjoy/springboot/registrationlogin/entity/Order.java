@@ -17,22 +17,12 @@ public class Order {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
+   // id user
+    @OneToOne
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    //Ngay lap don hang
-    @Column(nullable = false)
-    private String orderDate;
-
     @Column(nullable = false)
     private double totalPrice;
-
-    @Column(nullable = false)
-    private int status;
-
-
-
-
 
 }

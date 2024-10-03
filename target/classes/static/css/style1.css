@@ -1,32 +1,4 @@
 @import url('https://fonts.googleapis.com/css2?family=League+Spartan:wght@100;200;300;400;500;600;700;800;900&family=Roboto:ital,wght@0,400;0,500;0,700;1,400;1,500;1,700&display=swap');
-
-:root {
-    --primary-color: #ff6b6b;
-    --secondary-color: #794afa;
-    --secondary-dark-color: #453c5c;
-
-    --white-color: #fff;
-    --light-bg-color: #f2f3f5;
-    --light-text-color: #7c899a;
-    --border-color: #e5e8ec;
-    --dark-color: #0a021c;
-
-    --font-small: 13px;
-    --font-smaller: 11px;
-
-    --percent100: 100%;
-    --percent50: 50%;
-
-    --fw3: 300;
-    --fw5: 500;
-    --fw6: 600;
-    --fw7: 700;
-    --fw8: 800;
-
-    --trans-background-color: background-color 0.3s, color 0.3s;
-    --trans-background: background-color 0.3s;
-    --trans-color: color 0.3s;
-}
 * {
     margin: 0;
     padding: 0;
@@ -1320,9 +1292,6 @@ prodetails .single-pro-details input:focus {
     line-height: 1.2;
 }
 
-.mini-cart .item-content {
-    flex: auto;
-}
 .mini-cart .item-remove {
     margin-left: 1em;
     flex: 1;

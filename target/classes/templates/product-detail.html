@@ -8,158 +8,6 @@
     <link rel="stylesheet" href="./style.css" />
     <link rel="stylesheet" th:href="@{/css/style1.css}">
     <script src="https://kit.fontawesome.com/bea9b25826.js" crossorigin="anonymous"></script>
-
-    <script>
-        //Hàm cập nhật giá sản phẩm khi chọn size
-        function updatePrice() {
-            var select = document.getElementById("product-options");
-            var price = select.options[select.selectedIndex].value;
-            document.getElementById("product-price").innerText = "$" + price;
-        }
-    </script>
-
-    <script>
-        //Ham lay tham so tu url product_id
-        function getParameterByName(name) {
-            var url = window.location.href;
-            name = name.replace(/[\[\]]/g, "\\$&");
-            var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
-                results = regex.exec(url);
-            if (!results) return null;
-            if (!results[2]) return '';
-            return decodeURIComponent(results[2].replace(/\+/g, " "));
-        }
-
-        //Hàm thêm sản phẩm vào giỏ hàng
-        function addToCart() {
-            var select = document.getElementById("product-options");
-            var selectedOption = select.options[select.selectedIndex];
-            var product = {
-                id: selectedOption.getAttribute("data-id"),
-                productId:  getParameterByName('product_id'),
-                name: document.querySelector(".single-pro-details h4").innerText,
-                price: selectedOption.value,
-                size: selectedOption.text.split(' - ')[0].split(': ')[1],
-                color: selectedOption.text.split(' - ')[1].split(': ')[1],
-                quantity: parseInt(document.querySelector(".single-pro-details input[type='number']").value),
-                img: document.querySelector(".single-pro-image img").src
-            };
-
-            var cart = JSON.parse(localStorage.getItem("cart")) || [];
-            var existingProductIndex = cart.findIndex(item =>
-                item.id === product.id &&
-                item.productId === product.productId
-            );
-
-            if (existingProductIndex !== -1) {
-                cart[existingProductIndex].quantity += product.quantity;
-            } else {
-                cart.push(product);
-            }
-
-            localStorage.setItem("cart", JSON.stringify(cart));
-            updateCartDisplay();
-        }
-
-
-        //Hàm cập nhật giỏ hàng
-        function updateCartDisplay() {
-            var cart = JSON.parse(localStorage.getItem("cart")) || [];
-            var cartItemsContainer = document.querySelector(".mini-cart .products");
-            cartItemsContainer.innerHTML = "";
-
-            cart.forEach(function(item, index) {
-                var cartItem = document.createElement("li");
-                cartItem.classList.add("item");
-                cartItem.innerHTML = `
-            <div class="thumbnail object-cover">
-                <a href="#"><img src="${item.img}" alt=""></a>
-            </div>
-            <div class="item-content">
-                <p><a href="#" style="font-size: 14px">${item.name}</a></p>
-                <span class="price">
-                    <span>$${item.price} - ${item.size} - ${item.color}</span>
-                    <button class="fly-item" onclick="removeFromCart(${index})"><span>X</span></button>
-                </span>
-                <div class="qty-control flexitem">
-                    <button class="minus" onclick="updateQuantity(${index}, -1)">-</button>
-                    <input type="text" value="${item.quantity}" min="1">
-                    <button class="plus" onclick="updateQuantity(${index}, 1)">+</button>
-                </div>
-            </div>
-            <a href="" class="item-remove" onclick="removeFromCart(${index})"><i class="ri-close-line"></i></a>
-        `;
-                cartItemsContainer.appendChild(cartItem);
-            });
-        }
-
-
-        //Hàm xóa sản phẩm khỏi giỏ hàng
-        function removeFromCart(index) {
-            var cart = JSON.parse(localStorage.getItem("cart")) || [];
-            cart.splice(index, 1);
-            localStorage.setItem("cart", JSON.stringify(cart));
-            updateCartDisplay();
-        }
-
-        //Hàm cập nhật số lượng sản phẩm trong giỏ hàng
-        function updateQuantity(index, change) {
-            var cart = JSON.parse(localStorage.getItem("cart")) || [];
-            cart[index].quantity = Math.max(1, parseInt(cart[index].quantity) + change);
-            localStorage.setItem("cart", JSON.stringify(cart));
-            updateCartDisplay();
-        }
-
-        document.addEventListener("DOMContentLoaded", updateCartDisplay);
-    </script>
-
-
-    <script>
-
-        //Hàm tính tổng số lượng và tổng giá trị sản phẩm trong giỏ hàng
-        function updateCartDisplay() {
-            var cart = JSON.parse(localStorage.getItem("cart")) || [];
-            var cartItemsContainer = document.querySelector(".mini-cart .products");
-            cartItemsContainer.innerHTML = "";
-
-            var totalQuantity = 0;
-            var totalPrice = 0;
-
-            cart.forEach(function(item, index) {
-                totalQuantity += item.quantity;
-                totalPrice += item.price * item.quantity;
-
-                var cartItem = document.createElement("li");
-                cartItem.classList.add("item");
-                cartItem.innerHTML = `
-            <div class="thumbnail object-cover">
-                <a href="#"><img src="${item.img}" alt=""></a>
-            </div>
-            <div class="item-content">
-                <p><a href="#" style="font-size: 14px">${item.name}</a></p>
-                <span class="price">
-                    <span>$${item.price} - ${item.size} - ${item.color}</span>
-                    <button class="fly-item" onclick="removeFromCart(${index})"><span>X</span></button>
-                </span>
-                <div class="qty-control flexitem">
-                    <button class="minus" onclick="updateQuantity(${index}, -1)">-</button>
-                    <input type="text" value="${item.quantity}" min="1">
-                    <button class="plus" onclick="updateQuantity(${index}, 1)">+</button>
-                </div>
-            </div>
-            <a href="" class="item-remove" onclick="removeFromCart(${index})"><i class="ri-close-line"></i></a>
-        `;
-                cartItemsContainer.appendChild(cartItem);
-            });
-
-            document.querySelector(".cart-head").innerText = `${totalQuantity} items in cart`;
-            document.querySelector(".fly-item .item-number").innerText = totalQuantity;
-            document.querySelector(".subtotal p strong").innerText = `$${totalPrice.toFixed(2)}`;
-        }
-
-        document.addEventListener("DOMContentLoaded", updateCartDisplay);
-    </script>
-
 </head>
 <body>
 <section id="header">
@@ -176,99 +24,6 @@
             <li><a th:href="@{/contact}">Contact</a></li>
             <li id="lg-bag">
                 <a th:href="@{/cart}"><i class="fa-solid fa-bag-shopping"></i></a>
-            </li>
-            <li class="iscart">
-                <a href="#">
-                    <div class="icon-large" style="display: flex">
-                        <div class="fly-item"><span class="item-number" style="
-    position: absolute;
-        top: -22px;
-    left: 28px;
-    color: green;
-">5</span></div>
-                        <i class="fa-solid fa-shopping-cart"></i>
-                    </div>
-
-                </a>
-                <div class="mini-cart">
-                    <div class="content">
-                        <div class="cart-head">
-                            5 items in cart
-                        </div>
-                        <div class="cart-body">
-                            <ul class="products mini">
-
-                                <li class="item">
-                                    <div class="thumbnail object-cover">
-                                        <a href="#"><img th:src="@{/img/products/n1.jpg}" alt=""></a>
-                                    </div>
-                                    <div class="item-content">
-                                        <p><a href="#" style="font-size: 14px">Dimmable Ceiling Light Modern</a></p>
-                                        <span class="price">
-                                                            <span>$279.99 - XL - Xanh</span>
-                                                            <button class="fly-item"><span>X</span></button>
-
-                                                        </span>
-                                        <div class="qty-control flexitem">
-                                            <button class="minus">-</button>
-                                            <input type="text" value="2" min="1">
-                                            <button class="plus">+</button>
-                                        </div>
-                                    </div>
-                                    <a href="" class="item-remove"><i class="ri-close-line"></i></a>
-                                </li>
-
-                                <li class="item">
-                                    <div class="thumbnail object-cover">
-                                        <a href="#"><img th:src="@{/img/products/n1.jpg}" alt=""></a>
-                                    </div>
-                                    <div class="item-content">
-                                        <p><a href="#" style="font-size: 14px">Modern Storage Cabinet with Door & 3
-                                            Drawers</a></p>
-                                        <span class="price">
-                                                            <span>$129.99 - L - Vàng</span>
-                                                            <button class="fly-item"><span>X</span></button>
-                                                        </span>
-                                        <div class="qty-control flexitem">
-                                            <button class="minus">-</button>
-                                            <input type="text" value="2" min="1">
-                                            <button class="plus">+</button>
-                                        </div>
-                                    </div>
-                                    <a href="" class="item-remove"><i class="ri-close-line"></i></a>
-                                </li>
-                                <li class="item">
-                                    <div class="thumbnail object-cover">
-                                        <a href="#"><img th:src="@{/img/products/n1.jpg}" alt=""></a>
-                                    </div>
-                                    <div class="item-content">
-                                        <p><a href="#" style="font-size: 14px">Vonanda Velvet Sofa Couch</a></p>
-                                        <span class="price">
-                                                            <span>$352.99 - M - Trắng</span>
-                                                            <button class="fly-item"><span>X</span></button>
-                                                        </span>
-                                        <div class="qty-control flexitem">
-                                            <button class="minus">-</button>
-                                            <input type="text" value="2" min="1">
-                                            <button class="plus">+</button>
-                                        </div>
-                                    </div>
-                                    <a href="" class="item-remove"><i class="ri-close-line"></i></a>
-                                </li>
-                            </ul>
-                        </div>
-                        <div class="cart-footer">
-                            <div class="subtotal">
-                                <p>Subtotal</p>
-                                <p><strong>$1,622.95</strong></p>
-                            </div>
-                            <div class="actions">
-                                <a th:href="@{/cart}" class="primary-button">Checkout</a>
-
-                            </div>
-                        </div>
-                    </div>
-                </div>
             </li>
 
             <a href="#" id="close"><i class="fa-solid fa-xmark"></i></a>
@@ -302,18 +57,18 @@
         </div>
     </div>
 
-    <div class="single-pro-details" data-product-id="${product.id}">
+    <div class="single-pro-details">
         <h6>Home / T-Shirts</h6>
         <h4 th:text="${product.name}"></h4>
-        <h2 id="product-price" th:if="${productDetails != null and !productDetails.isEmpty()}"
-            th:text="'$' + ${productDetails[0].price}"></h2>
-        <select id="product-options" onchange="updatePrice()">
-            <option th:each="producDetail : ${productDetails}" th:text="'Size: ' + ${producDetail.size} + ' - Màu: ' + ${producDetail.color}" th:value="${producDetail.price}" th:attr="data-id=${producDetail.id}" ></option>
+        <h2 th:text="'$' + ${productDetails[0].price}"></h2>
+        <select class="productDetailsSelected">
+            <option th:each="producDetail : ${productDetails}" th:text="'Size: ' + ${producDetail.size} + ' - Màu: ' + ${producDetail.color}" th:value="${producDetail.price} + '-' + ${producDetail.id}"></option>
         </select>
-        <input type="number" value="1">
-        <button class="normal" onclick="addToCart()">Add To Cart</button>
+        <input type="number" value="1" id="quantity">
+        <button class="normal">Add To Cart</button>
         <h4>Product Details</h4>
         <span th:text="${product.description}"></span>
+
     </div>
 
 </section>

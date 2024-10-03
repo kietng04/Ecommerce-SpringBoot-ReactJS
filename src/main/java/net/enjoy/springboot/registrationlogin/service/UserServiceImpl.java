@@ -51,24 +51,18 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<UserDto> getAllUsers() {
+    public List<UserDto> findAllUsers() {
         List<User> users = userRepository.findAll();
-        List<UserDto> userDtos = users.stream().map(this::convertEntityToDto).collect(Collectors.toList());
-        return userDtos;
+        return users.stream().map((user) -> convertEntityToDto(user))
+                .collect(Collectors.toList());
     }
 
     private UserDto convertEntityToDto(User user) {
         UserDto userDto = new UserDto();
         String[] name = user.getName().split(" ");
-        userDto.setId(user.getId());
         userDto.setFirstName(name[0]);
         userDto.setLastName(name[1]);
         userDto.setEmail(user.getEmail());
         return userDto;
-    }
-
-    @Override
-    public User getUserById(Long id) {
-        return userRepository.findById(id).orElse(null);
     }
 }

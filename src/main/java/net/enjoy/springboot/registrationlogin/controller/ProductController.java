@@ -11,7 +11,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
@@ -19,20 +18,22 @@ import java.util.List;
 @Controller
 public class ProductController {
     private ProductService productService;
+    private CategoryService categoryService;
 
     @Autowired
-    public void setProductService(ProductService productService) {
+    public void setProductService(ProductService productService, CategoryService categoryService) {
         this.productService = productService;
+        this.categoryService = categoryService;
     }
 
     @GetMapping("/index")
     public String home(Model model, @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "3") int size) {
         Pageable pageable = PageRequest.of(page, size);
         Page<ProductDto> products = productService.findAllProduct(pageable);
+        model.addAttribute("categoryService", categoryService);
         model.addAttribute("products", products);
         return "index";
     }
-
 
     @GetMapping("/shop")
     public String shop(Model model, @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "3") int size, @RequestParam(value = "sizeId", required = false) Long sizeId, @RequestParam(value = "colorId", required = false) Long colorId, @RequestParam(value = "categoryId", required = false) Long categoryId, @RequestParam(defaultValue="0") Long minPrice,@RequestParam(defaultValue="999999999")Long maxPrice, @RequestParam(value = "name", required = false) String name) {
@@ -50,6 +51,14 @@ public class ProductController {
         return "shop";
     }
 
+    @GetMapping("/product_detail")
+    public String productDetail(Model model, @RequestParam(value = "id", required = false) Long idProduct) {
+        ProductDto product = productService.findById(idProduct);
+        model.addAttribute("product", product);
 
+        List<ProductDetailDto> productDetails = productService.findDetailById(idProduct);
+        model.addAttribute("productDetails", productDetails);
+        return "product-detail";
+    }
 
 }
