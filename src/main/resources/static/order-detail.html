@@ -47,20 +47,22 @@
         <tr>
             <td>Image</td>
             <td>Product</td>
+            <td>Color</td>
+            <td>Size</td>
             <td>Price</td>
             <td>Quantity</td>
             <td>Subtotal</td>
         </tr>
         </thead>
         <tbody>
-        <tr style="border-bottom: 1px solid #e2e9e1;">
+        <!-- <tr style="border-bottom: 1px solid #e2e9e1;">
             <td><img src="./img/products/f1.jpg" alt=""></td>
             <td>Cartoon Astronaut T-Shirts</td>
             <td>$118.19</td>
             <td>1</td>
             <td>$118.19</td>
-        </tr>
-        <tr style="border-bottom: 1px solid #e2e9e1;">
+        </tr> -->
+        <!-- <tr style="border-bottom: 1px solid #e2e9e1;">
             <td><img src="./img/products/f2.jpg" alt=""></td>
             <td>Cartoon Astronaut T-Shirts</td>
             <td>$118.19</td>
@@ -73,6 +75,15 @@
             <td>$118.19</td>
             <td>1</td>
             <td>$118.19</td>
+        </tr> -->
+        <tr th:each="detail : ${orderDetails}">
+            <td><img th:src="@{${detail.productDetail.product.img}}" alt="Product Image"></td>
+            <td th:text="${detail.productDetail.product.name}">Product Name</td>
+            <td th:text="${detail.productDetail.color.colorName}">Color</td>
+            <td th:text="${detail.productDetail.size.sizeName}">Size</td>
+            <td th:text="${detail.productDetail.price}">Price</td>
+            <td th:text="${detail.quantity}">Quantity</td>
+            <td th:text="${detail.productDetail.price * detail.quantity}">Total</td>
         </tr>
         </tbody>
     </table>
@@ -84,17 +95,17 @@
         <table>
             <tr>
                 <td><strong>Fullname</strong></td>
-                <td>Phạm Văn Kiệt</td>
+                <td th:text="${user.name}"></td>
 
             </tr>
             <tr>
                 <td><strong>Phone number</strong></td>
-                <td>123456789</td>
+                <td th:text="${user.phone}"></td>
 
             </tr>
             <tr>
                 <td><strong>Adress</strong></td>
-                <td>An Dương Vương, Quận 5</td>
+                <td th:text="${user.address}"></td>
 
             </tr>
 
@@ -105,15 +116,15 @@
         <table>
             <tr>
                 <td><strong>Order Id</strong></td>
-                <td>MH1</td>
+                <td th:text="${order.id}"></td>
             </tr>
             <tr>
                 <td><strong>Order Date</strong></td>
-                <td>1/8/2024</td>
+                <td th:text="${order.orderTime}"></td>
             </tr>
             <tr>
                 <td><strong>Total Price</strong></td>
-                <td>$ 335</td>
+                <td th:text="${order.totalPrice}">/td>
             </tr>
             <tr>
                 <td><strong>Order Status</strong></td>

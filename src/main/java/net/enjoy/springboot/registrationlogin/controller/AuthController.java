@@ -3,7 +3,9 @@ package net.enjoy.springboot.registrationlogin.controller;
 import ch.qos.logback.classic.Logger;
 import jakarta.validation.Valid;
 import net.enjoy.springboot.registrationlogin.dto.UserDto;
+import net.enjoy.springboot.registrationlogin.entity.Order;
 import net.enjoy.springboot.registrationlogin.entity.User;
+import net.enjoy.springboot.registrationlogin.service.OrdersService;
 import net.enjoy.springboot.registrationlogin.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -22,11 +24,13 @@ import java.util.List;
 @Controller
 public class AuthController {
     private UserService userService;
+    private OrdersService ordersService;
     private Logger log;
 
     @Autowired
-    public void setUserService(UserService userService) {
+    public void setUserService(UserService userService, OrdersService ordersService) {
         this.userService = userService;
+        this.ordersService = ordersService;
     }
 
     // handler method to handle home page `reques`t
@@ -50,13 +54,27 @@ public class AuthController {
     }
     // để chuyển hướng đến trang chủ, lấy từ index.html thành map ur
     @GetMapping("/cart")
-    public String cart() {
+    public String cart(Model model) {
+        Long id = printLoggedInUserId();
+        if(id == null){
+            return "redirect:/login";
+        }
+        System.out.println(id);
+        User user = userService.getUser(id);
+        System.out.println(user);
+        model.addAttribute("user", user);
         return "cart";
     }
 
 
     @GetMapping("/order")
-    public String order() {
+    public String order(Model model) {
+        Long id = printLoggedInUserId();
+        if(id == null){
+            return "redirect:/login";
+        }
+        List<Order> orders = ordersService.getOrdersByUserId(id);
+        model.addAttribute("orders", orders);
         return "order";
     }
 

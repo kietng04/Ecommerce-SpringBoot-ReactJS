@@ -88,6 +88,34 @@
                     </div>
 
                     <div class="form-group mb-3">
+                        <label class="form-label">Phone</label>
+                        <input
+                                class="form-control"
+                                id="phone"
+                                name="phone"
+                                placeholder="Enter phone number"
+                                th:field="*{phone}"
+                                type="phone"
+                        />
+                        <p th:errors = "*{phone}" class="text-danger"
+                           th:if="${#fields.hasErrors('phone')}"></p>
+                    </div>
+
+                    <div class="form-group mb-3">
+                        <label class="form-label">address</label>
+                        <input
+                                class="form-control"
+                                id="address"
+                                name="address"
+                                placeholder="Enter address"
+                                th:field="*{address}"
+                                type="address"
+                        />
+                        <p th:errors = "*{address}" class="text-danger"
+                           th:if="${#fields.hasErrors('address')}"></p>
+                    </div>
+
+                    <div class="form-group mb-3">
                         <label class="form-label">Password</label>
                         <input
                                 class="form-control"

@@ -69,16 +69,31 @@
 
   <div id="coupon">
     <h3>Billing address</h3>
-    <div>
-      <div >Fullname *</div>
-      <input type="text" id="fullname" placeholder="Enter Your Fullname">
-      <div >Phone Number *</div>
-      <input type="text" id="phone" placeholder="Enter Your Phone Number">
-      <div >Address *</div>
-      <input type="text" id="address" placeholder="Enter Your Address">
-      <button class="normal">Change information</button>
+    <div th:if="${param.success}">
+      <div class="alert alert-info">
+          You have successfully updated your information!
+      </div>
     </div>
+    <form method="post"
+          role="form"
+          th:action="@{/cart/update/{id}(id=${user.id})}"
+          th:object="${user}">
 
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name"   th:field="*{name}" required="">
+
+       <label for="phone">Phone*:</label>
+       <input type="text" id="phone" placeholder="Enter Your Phone Number" name="phone"  th:field="*{phone}" required="">
+        <label for="address">Address*:</label>
+        <input type="text" id="address" placeholder="Enter Your Address" name="address"  th:field="*{address}" required="">
+        
+        <input type="text" id="email" name="email"  th:field="*{email}" required="" style="display: none;">
+          <input type="text" id="password" name="password" style="display: none;">
+          <input type="hidden" id="isPasswordChanged" name="isPasswordChanged" value="false">
+
+
+        <button type="submit" class="normal">Change information</button>
+    </form>
   </div>
 
   <div id="subtotal">
@@ -93,11 +108,11 @@
         <td class="totalprice">$ 1,600</td>
       </tr>
     </table>
-    <a th:href="@{/order}">
+    
     <button class="orderBtn">
       Place Order!
     </button>
-    </a>
+    
   </div>
 </section>
 
@@ -177,10 +192,10 @@
             <td>${cart.product.name}</td>
             <td>${cart.productDetail.price}</td>
             <td><input type="number" value="${cart.quantity}"></td>
-            <td>${parseInt(cart.productDetail.price) * parseInt(cart.quantity)}</td>
+            <td>${parseFloat(cart.productDetail.price) * parseInt(cart.quantity)}</td>
           </tr>
         `
-        totalPrice += parseInt(cart.productDetail.price) * parseInt(cart.quantity);
+        totalPrice += parseFloat(cart.productDetail.price) * parseInt(cart.quantity);
       })
       carts.innerHTML = cartRow;
       // parsrse total price to double and show
@@ -197,7 +212,7 @@
    //prevent default orderBtn
     document.querySelector('.orderBtn').addEventListener('click', function(e) {
       e.preventDefault();
-      var fullname = document.querySelector('#fullname').value;
+      var name = document.querySelector('#name').value;
       var phone = document.querySelector('#phone').value;
       var address = document.querySelector('#address').value;
       var totalPrice = document.querySelector('.totalprice').innerHTML;
@@ -212,13 +227,13 @@
         success: function(data) {
           console.log(data);
           alert('Order placed successfully');
+          window.location.href = '/order';
         },
         error: function() {
           console.log('error')
         }
       })
     });
-    
   });
 
 </script>

@@ -54,52 +54,19 @@
         </tr>
         </thead>
         <tbody>
-        <tr style="border-bottom: 1px solid #e2e9e1;">
-            <td>MH1</td>
-            <td>1/8/2024 </td>
-            <td>$118.19</td>
-            <td>Pending</td>
+        <tr style="border-bottom: 1px solid #e2e9e1;" th:each="order : ${orders}">
+            <td th:text="${order.id}"></td>
+            <td th:text="${order.orderTime}"></td>
+            <td th:text="${order.totalPrice}"></td>
+            <td >Pending</td>
             <td>
-                <a th:href="@{/order-detail}">
-                    <button style="    background-color: #088178;
-    color: #fff;
-    padding: 12px 20px;" class="normal">Show >> </button>
+                <a th:href="@{/order-detail/{id}(id=${order.id})}">
+                    <button style="background-color: #088178;
+                    color: #fff;
+                    padding: 12px 20px;" class="normal">Show >> </button>
                 </a></td>
 
             <td><a href="#"><i class="fa-regular fa-circle-xmark"></i></a></td>
-
-        </tr>
-        <tr style="border-bottom: 1px solid #e2e9e1;">
-            <td>MH1</td>
-            <td>1/8/2024 </td>
-            <td>$118.19</td>
-            <td>Pending</td>
-            <td>
-                <a th:href="@{/order-detail}">
-                    <button style="    background-color: #088178;
-    color: #fff;
-    padding: 12px 20px;" class="normal">Show >> </button>
-                </a></td>
-
-            <td><a href="#"><i class="fa-regular fa-circle-xmark"></i></a></td>
-
-        </tr>
-        <tr style="border-bottom: 1px solid #e2e9e1;">
-            <td>MH1</td>
-            <td>1/8/2024 </td>
-            <td>$118.19</td>
-            <td>Pending</td>
-            <td>
-                <a th:href="@{/order-detail}">
-                    <button style="    background-color: #088178;
-    color: #fff;
-    padding: 12px 20px;" class="normal">Show >></button>
-                </a></td>
-
-            <td><a href="#"><i class="fa-regular fa-circle-xmark"></i></a></td>
-
-        </tr>
-
         </tbody>
     </table>
 </section>
@@ -160,5 +127,8 @@
 </footer>
 
 <script src="/js/script.js"></script>
+<script>
+
+</script>
 </body>
 </html>

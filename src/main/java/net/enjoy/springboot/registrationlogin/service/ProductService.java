@@ -5,7 +5,6 @@ import net.enjoy.springboot.registrationlogin.dto.ProductDto;
 import net.enjoy.springboot.registrationlogin.entity.Product;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import net.enjoy.springboot.registrationlogin.entity.ProductDetail;
 import java.util.List;
 import java.util.Map;
 
